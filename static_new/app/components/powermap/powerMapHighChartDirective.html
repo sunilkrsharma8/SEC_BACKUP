@@ -1,0 +1,21 @@
+<div class="col-sm-5 col-md-5 col-lg-5" style="padding-left: 0px;">
+   <div class="box" style="height: 50px; border-radius: 15px; border: 2px solid #8FD6F5;margin-bottom: 10px; background-color: #333;">
+      <div style="color: #fff; margin: 5px;">
+         <div class="row form-group" style="margin-top: 5px;margin-left:-12px; margin-right:2px;margin-bottom:5px">
+            <select  style="float: left;" class="col-xs-6 selectpicker" id="tagsDropDown" multiple="true" ng-model="selectTags" ng-change="onChangeTagsSelection()"></select>
+            <div class = "btn-group col-sm-6" id="kpiDuration" style="margin-bottom: 5px; float: right; margin-right: -18px;" >
+               <button style="width:20%;" type = "button" class = "btn btn-default" value="7" ng-click="kpiDuration($event)">7</button>
+               <button style="width:20%;" type = "button" class = "btn btn-default" value="15" ng-click="kpiDuration($event)">15</button>
+               <button style="width:20%;" type = "button" class = "btn btn-default" value="30" ng-click="kpiDuration($event)">30</button>
+               <button style="width:20%;" type = "button" class = "btn btn-default" value="60" ng-click="kpiDuration($event)">60</button>
+               <button style="width:20%;" type = "button" class = "btn btn-default activeDurationBtn" value="90" ng-click="kpiDuration($event)">90</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="box" style="height: 435px; border-radius: 15px; border: 2px solid #8FD6F5; background-color: #333;">
+      <div class="box-body" style="padding: 5px;">
+         <div id="container" style="min-width: 50%; height: 420px;; border-radius: 22px; border: 2px solid #8FD6F5;"></div>
+      </div>
+   </div>
+</div>

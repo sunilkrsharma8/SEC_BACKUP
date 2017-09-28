@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="analyticsDashboardApp">
+    <head id="Head1" runat="server">
+        <title>Home</title>
+        <link rel="shortcut icon" href="images/gelogo.jpg"></link>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'></meta>
+        <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"></link>
+        <link href="css/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/bootstrap/3.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"></link>
+        <link href="css/AdminLTE.css" rel="stylesheet" type="text/css"></link>
+        <link rel="stylesheet" href="css/app-custom.css"></link>
+        
+        <style type="text/css">
+            ::-webkit-scrollbar { width: 8px; height: 6px;}
+            ::-webkit-scrollbar-button {  background-color: #8FD6F5; }
+            ::-webkit-scrollbar-track {  background-color: #333;}
+            ::-webkit-scrollbar-track-piece { background-color: #333;}
+            ::-webkit-scrollbar-thumb { height: 50px; background-color: #8FD6F5; border-radius: 15px;}
+            ::-webkit-scrollbar-corner { background-color: #fff;}
+            ::-webkit-resizer { background-color: #d3d3d3;}
+            
+            #pleaseWaitDialog {
+				position: fixed;
+				top: 30%;
+            }
+			
+            .Box-Color {
+				background-color: #428bca!important;
+            }
+			
+            .left-side {
+				position: fixed !important;
+            }
+			
+            body {
+				padding-top: 50px;
+            }
+			
+            body > .header {
+				position: fixed !important;
+            }
+			
+            .chartDivStyle {
+				padding-top: 15px !important;
+				border-radius:20px !important;
+            }
+			
+            .rowStyle {
+				margin-bottom: 15px !important;
+            }
+            
+			.highcharts-container {
+				position: inherit !important;
+				border-radius:20px !important;
+				/* width:100% !important;
+				height:100% !important;  */
+            }
+
+            .highcharts-tooltip { 
+				z-index: 9998;
+            }
+			
+            .skin-black .navbar .nav > li > a,
+            .skin-black .navbar .nav > li > a:hover,
+            .skin-black .navbar .nav > li > a:focus ,
+            .skin-black .navbar .nav .open > a,
+            .skin-black .navbar .nav .open > a:hover,
+            .skin-black .navbar .nav .open > a:focus {
+				color: #c00;
+				background-color: transparent;
+            }
+			
+            .navbar-nav > .notifications-menu > .dropdown-menu > li.header, 
+            .navbar-nav > .messages-menu > .dropdown-menu > li.header, 
+            .navbar-nav > .tasks-menu > .dropdown-menu > li.header {
+				background-color: #d3d3d3;
+				color: #000000;
+            }
+
+            .navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .glyphicon, 
+            .navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .fa, 
+            .navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .ion {
+				background-color: transparent;
+            }
+			
+			.box {
+				background: transparent;
+			}
+			
+			.box-title {
+				color: #fff;
+			}
+			
+			.flot-text {
+				color: #fff !important;
+			}
+        </style>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
+        <script type="text/javascript">
+
+
+      function LoadChart(divName, Name, Data)
+      {
+      newState =0;
+       setTimeout(function () {
+        if (newState == -1) {
+            alert(' HAS STOPPED');
+        }
+    }, 5000);
+            Highcharts.chart(divName, {
+    chart: {
+        backgroundColor: {
+		         linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+		         stops: [
+		            [0, 'rgb(96, 96, 96)'],
+		            [1, 'rgb(16, 16, 16)']
+		         ]
+		      },
+        margin: [0, 0, 0, 15],
+                    spacingTop: 0,
+                    spacingBottom: 0,
+                    spacingLeft: 0,
+                    spacingRight: 0,
+                    width: 210,
+                    height: 150,
+                    type: 'pie'
+    },
+    title: {
+    style: {
+	         color: '#E0E0E3',
+	         textTransform: 'uppercase',
+	         fontSize: '20px'
+	         
+	      },
+        text:'<b style="font-size:15px;">' +  Name + '</b>'
+    },
+    credits: {
+        enabled: false
+    },
+    exporting: {
+            enabled: false
+    },
+    labels: {
+	      style: {
+	         color: '#707073'
+	      }
+	   },
+    legend: {
+    itemStyle: {
+	         color: '#E0E0E3'
+	      },
+	      itemHoverStyle: {
+	         color: '#FFF'
+	      },
+	      itemHiddenStyle: {
+	         color: '#606063'
+	      },
+        itemDistance: 50
+    },
+    tooltip: {
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+	      style: {
+	         color: '#F0F0F0'
+             },
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '{point.y:.1f}%',
+                style: {
+                    color: '#B0B0B3'
+                   
+                }
+            }
+        }
+    },
+    series: [{
+                    name: 'Rule',
+                      data: [
+                        {
+                            color: 'RGB(105,210,231)',
+                            name: 'RS',
+                            y: Data[0]
+                        },
+                        {
+                            color: 'RGB(255,172,0)',
+                            name: 'RF',
+                            y: Data[3]
+                        },
+                        {
+                            color:'RGB(177,235,0)',
+                            name: 'ABNR',
+                            y: Data[2]
+                        },
+//                        {
+//                            color: '',
+//                            name: 'NA',
+//                            y: getNA
+//                        },
+                        {
+                            color: 'RGB(255,67,46)',
+                            name: 'CG',
+                            y: Data[1]
+                        }],
+                         
+                      size: '70%',
+                      innerSize: '40%',
+                      dataLabels: {
+                          
+                          distance: 2
+                      }
+    }]
+});
+      }
+      
+
+      function LoadPieChartData()
+      {
+      
+            LoadChart('pieDiv1','Analytic 1',[ 85.7,4.1,10.2,0.0]);
+            LoadChart('pieDiv2','Analytic 2',[ 85.7,2.0,12.2,0.0]);
+            LoadChart('pieDiv13','Analytic 3',[ 85.7,4.1,10.2,0.0]);
+            LoadChart('pieDiv4','Analytic 4',[ 85.7,4.1,10.2,0.0]);
+            LoadChart('pieDiv5','Analytic 5',[ 85.7,4.1,10.2,0.0]);
+            LoadChart('pieDiv6','Analytic 6',[ 85.7,4.1,10.2,0.0]);
+            LoadChart('pieDiv7','Analytic 7',[ 81.8,9.1,9.1,0.0]);
+            LoadChart('pieDiv8','Analytic 8',[ 80.6,12.2,7.2,0.0]);
+            LoadChart('pieDiv9','Analytic 9',[ 76.8,11.0,12.2,0.0]);
+            LoadChart('pieDiv10','Analytic 10',[ 76.2,11.6,12.2,0.0]);
+            LoadChart('pieDiv11','Analytic 11',[ 75.9,9.9,14.2,0.0]);
+            LoadChart('pieDiv12','Analytic 12',[ 75.9,11.6,12.5,0.0]);
+            LoadChart('pieDiv13','Analytic 3',[ 85.7,4.1,10.2,0.0]);
+       }
+    </script>
+        
+    </head>
+    
+    <body onload="LoadPieChartData()" class="skin-black" data-ng-controller="HomeController" style="background-color: #444 !important;">
+        <header class="header">
+            <a href="#" class="logo">
+                <img src="images/gelogo_neutral.png" class="icon" alt="ge" width="100%" height="100%" />
+                <!--<span style="font-size:14px">GE Power Services</span>      -->
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation" style="background-color: #444 !important;border: none !important;">
+                <a href="#" class="navbar-btn sidebar-toggle" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar" style="background: #f9f9f9 !important;"></span>
+                <span class="icon-bar" style="background: #f9f9f9 !important;"></span>
+                <span class="icon-bar" style="background: #f9f9f9 !important;"></span>
+                </a>
+                <!--<nav class="navbar navbar-default">-->
+                <div class="navbar-custom-menu">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#" style="color:white">SEC Dashboard <small style="font-size:12px">Powered By Predix</small></a> 
+                    </div>
+                    <ul class="nav navbar-nav navbar-right" style="padding-right:25px">
+                        <!-- Messages: style can be found in dropdown.less-->
+                        <!-- Notifications: style can be found in dropdown.less -->
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+                            <i class="fa fa-bell-o" style="font-size:24px;color:red"></i>
+                            <span class="label label-warning">5</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 5 notifications</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="#" data-toggle="tooltip" title="Priority 4 - Turbine 8 (Local Bearing Problem)">
+                                            <i class="fa fa-warning text-red" ></i>Priority 4 - Turbine 8 (Local Bearing Problem)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-toggle="tooltip" title="Priority 1 - Turbine 11 (Excessive Rotor Vibration Problem)">
+                                            <i class="fa fa-warning text-red"></i>Priority 1 - Turbine 11 (Excessive Rotor Vibration Problem)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-toggle="tooltip" title="Priority 3 - Turbine 10 (Thrust Bearing - Axial Shift)">
+                                            <i class="fa fa-warning text-red"></i>Priority 3 - Turbine 10 (Thrust Bearing - Axial Shift)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-toggle="tooltip" title="Turbine 7 went offline">
+                                            <i class="fa fa-warning text-red"></i>Turbine 7 went offline
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" data-toggle="tooltip" title="Priority 5 - Turbine 9 (Wheelspace Temperature Problem)">
+                                            <i class="fa fa-warning text-red"></i>Priority 5 - Turbine 9 (Wheelspace Temperature Problem)
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="footer"><a href="#">View all</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!--</nav>-->
+            </nav>
+        </header>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+        <input type="hidden" id="IsEnableButton" runat="server" />
+        <aside class="left-side sidebar-offcanvas">
+            <section class="sidebar">
+                <div class="user-panel">
+                    <div class="pull-left image">
+                    </div>
+                    <div class="pull-left info">
+                        <i class="glyphicon glyphicon-user"></i>
+                        Hello, Suresh S. Nair<!-- <%=(Session["FirstName"] + "!") %> -->
+                        <br />
+                        <a href="logout.html"><i class="fa fa-circle text-success"></i> Logout</a>
+                    </div>
+                </div>
+                <ul class="sidebar-menu  scroll">
+                    <li>
+                        <a href="#"><i class="fa fa-th"></i><span>Dashboard</span></a>
+                    </li>
+                     <li>
+                        <a href="powermap.html"><i class="fa fa-th"></i><span>PowerMap</span></a>
+                    </li>
+                    <li>
+                        <a href="meridium.html"><i class="fa fa-th"></i><span>Meridium</span></a>
+                    </li>
+                    <li>
+                        <a href="eterra.html"><i class="fa fa-th"></i><span>eTerra</span></a>
+                    </li>
+                    <li>
+                        <a href="oe.html"><i class="fa fa-th"></i><span>OE</span></a>
+                    </li>
+                </ul>
+                <!-- <Menu:UCMenu runat="server" ID="MyUserInfoBoxControl" /> -->
+            </section>
+        </aside>
+        <aside class="right-side" style="background:transparent;">
+            <section class="content-header" style="background-color:#333;">
+                <h1 style="color:#fff;">
+                    Dashboard
+                    <small><span /></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#" style="color:#fff !important;"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li><a href="#" class="active" style="color:#fff !important;">Dashboard</a></li>
+                </ol>
+            </section>
+            <form id="form1" runat="server" method="POST" enctype="multipart/form-data">
+                <input id="emailHdn" type="hidden" value="" />
+                <section class="content invoice" id="target" style="background:transparent;border: none !important;">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <!-- small box -->
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>5</h3>
+                                    <p>Online Assets</p>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#onlineAssets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-xs-4">
+                            <!-- small box -->
+                            <div class="small-box bg-red">
+                                <div class="inner">
+                                    <h3>2</h3>
+                                    <p>Offline Assets</p>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#offlineAssets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-xs-4">
+                            <!-- small box -->
+                            <div class="small-box bg-yellow">
+                                <div class="inner">
+                                    <h3>4</h3>
+                                    <p>Assets with issues</p>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#assetsWithIssues" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7">
+							<!-- interactive chart -->
+							<div class="box" style="height:300px;border-radius:20px;border: 2px solid #8FD6F5;overflow: hidden;">
+								<div class="box-header with-border">
+									<h3 class="box-title">Power Output</h3>
+									<div class="box-tools pull-right">
+										<span style="color: #fff">Real time</span>
+										<div class="btn-group" id="realtime" data-toggle="btn-toggle">
+											<button type="button" class="btn btn-success btn-xs active" data-toggle="on">On</button>
+											<button type="button" class="btn btn-danger btn-xs" data-toggle="off">Off</button>
+										</div>
+									</div>
+								</div>
+								<div class="box-body">
+									<div id="interactive" style="height: 230px;"></div>
+								</div>
+								<!-- /.box-body-->
+							</div>
+							<!-- /.box -->
+                        </div>
+                        <div class="col-sm-5 col-md-5 col-lg-5">
+							<!-- BAR CHART -->
+                            <div class="box" style="height:300px;border-radius:20px;border: 2px solid #8FD6F5;overflow: hidden;">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Power History</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="barChart" height="165px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                    <hr style="font-weight:bold;border: none !important;" />
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div id="Div1" style="font-family:GeInspira, 'Source Sans Pro', sans-serif;color: #fff;">
+                                <span style="color:RGB(105,210,231);">&#9632;</span> RS  : Run Success &nbsp;&nbsp;&nbsp;
+                                <span style="color:RGB(255,172,0);">&#9632;</span> RF  : Run Failure &nbsp;&nbsp;&nbsp;
+                                <span style="color:RGB(177,235,0);">&#9632;</span> ABNR  : Applicable But Not Run &nbsp;&nbsp;&nbsp;
+                                <span style="color:RGB(255,67,46);">&#9632;</span> CG  : Configuration Gap (Underdeployed/Overdeployed)
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="font-weight:bold;border: none !important;" />
+<!--                     <div class="row"> -->
+<!-- 	                    <div class="col-md-12 col-lg-12"> -->
+<!-- 	                        <div id="Main"></div> -->
+<!-- 	                        <div class="row rowStyle" id="Row0"> -->
+<!-- 	                            <div id="col0" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle"> -->
+<!-- 	                                <div id="pieDiv0" data-highcharts-chart="2"> -->
+<!-- 	                                    <div id="highcharts-vqcawg2-11" class="highcharts-container " style="position: relative; overflow: hidden; width: 210px; height: 150px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); font-family: GeInspira, &quot;Source Sans Pro&quot;, sans-serif;"> -->
+<!-- 	                                        <svg version="1.1" class="highcharts-root" style="font-family:GeInspira, &#39;Source Sans Pro&#39;, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="210" height="150" viewBox="0 0 210 150"> -->
+<!-- 	                                            <desc>Created with Highcharts 5.0.12</desc> -->
+<!-- 	                                            <defs> -->
+<!-- 	                                                <lineargradient x1="0" y1="0" x2="0" y2="1" id="highcharts-vqcawg2-12"> -->
+<!-- 	                                                    <stop offset="0" stop-color="rgb(96, 96, 96)" stop-opacity="1"> -->
+<!-- 	                                                    </stop> -->
+<!-- 	                                                    <stop offset="1" stop-color="rgb(16, 16, 16)" stop-opacity="1"></stop> -->
+<!-- 	                                                </lineargradient> -->
+<!-- 	                                                <clippath id="highcharts-vqcawg2-13"> -->
+<!-- 	                                                    <rect x="0" y="0" width="195" height="150" fill="none"></rect> -->
+<!-- 	                                                </clippath> -->
+<!-- 	                                            </defs> -->
+<!-- 	                                            <rect fill="url(#highcharts-vqcawg2-12)" class="highcharts-background" x="0" y="0" width="210" height="150" rx="0" ry="0"></rect> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-background" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-pane-group"></g> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-border" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-series-group"> -->
+<!-- 	                                                <g class="highcharts-series highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)"> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 85.15401386002387 28.097690608760885 A 48.5 48.5 0 0 0 59.58749153241035 44.752823244227514 Z" class="highcharts-halo highcharts-color-2" fill-opacity="0.25"></path> -->
+<!-- 	                                                    <path fill="RGB(105,210,231)" d="M 97.49012184962078 26.50000100595728 A 48.5 48.5 0 1 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 1 0 97.49604873984832 55.60000040238291 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-0 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,172,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-1"></path> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 92.56160554400954 56.23907624350436 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-2 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,67,46)" d="M 85.20092233459062 28.085368075831312 A 48.5 48.5 0 0 1 97.43263447300353 26.50004678470532 L 97.47305378920142 55.60001871388213 A 19.4 19.4 0 0 0 92.58036893383624 56.234147230332525 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-3 "></path> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-markers highcharts-series-0 highcharts-pie-series highcharts-color-undefined " transform="translate(15,0) scale(1 1)"></g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <text x="105" text-anchor="middle" class="highcharts-title" style="color:#E0E0E3;font-size:20px;text-transform:uppercase;fill:#E0E0E3;" y="15"> -->
+<!-- 	                                                <tspan style="font-size:15px;">ATB_4B</tspan> -->
+<!-- 	                                            </text> -->
+<!-- 	                                            <g class="highcharts-data-labels highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)" opacity="1"> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-0" stroke="RGB(105,210,231)" stroke-width="1" d="M 124.41112882543666 120.49892782907217 C 119.41112882543666 120.49892782907217 118.89046833849562 119.41776518758927 118.7169148428486 119.0573776404283 L 118.54336134720157 118.69699009326733"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-1" stroke="RGB(255,172,0)" stroke-width="1" d="M 42.20089464016283 70.5 C 47.20089464016283 70.5 58.955707914326126 44.26195276836444 59.268440507313336 44.51134868910793 L 59.581173100300546 44.76074460985143"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-2" stroke="RGB(177,235,0)" stroke-width="1" d="M 50.14436283090526 47.5 C 55.14436283090526 47.5 70.60512937031996 33.68225642883225 70.82334333080418 34.017491670788985 L 71.0415572912884 34.35272691274572"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-3" stroke="RGB(255,67,46)" stroke-width="1" d="M 86.04220333493251 24.5 C 91.04220333493251 24.5 91.19565592895387 26.10475231851396 91.24680679362767 26.50146832404326 L 91.29795765830147 26.89818432957256"></path> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-0 " transform="translate(129,110)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">85.7%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">85.7%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-1 " transform="translate(2,61)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">0.0%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">0.0%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-2 " transform="translate(4,38)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">10.2%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">10.2%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-3 " transform="translate(46,15)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">4.1%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">4.1%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-legend"> -->
+<!-- 	                                                <rect fill="none" class="highcharts-legend-box" rx="0" ry="0" x="0" y="0" width="8" height="8" visibility="hidden"></rect> -->
+<!-- 	                                                <g> -->
+<!-- 	                                                    <g></g> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-label highcharts-tooltip highcharts-color-2" style="cursor:default;pointer-events:none;white-space:nowrap;" transform="translate(1,-9999)" opacity="0" visibility="visible"> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="rgba(0, 0, 0, 0.85)" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="RGB(177,235,0)" stroke-width="1"></path> -->
+<!-- 	                                                <text x="8" style="font-size:12px;color:#F0F0F0;fill:#F0F0F0;" y="20"> -->
+<!-- 	                                                    <tspan style="font-size:11px">ATB_4B</tspan> -->
+<!-- 	                                                    <tspan style="fill:RGB(177,235,0)" x="8" dy="15">ABNR</tspan> -->
+<!-- 	                                                    <tspan dx="0">: </tspan> -->
+<!-- 	                                                    <tspan style="font-weight:bold" dx="0">10.20%</tspan> -->
+<!-- 	                                                    <tspan dx="0"> of total</tspan> -->
+<!-- 	                                                </text> -->
+<!-- 	                                            </g> -->
+<!-- 	                                        </svg> -->
+<!-- 	                                    </div> -->
+<!-- 	                                </div> -->
+<!-- 	                            </div> -->
+<!-- 	                            <div id="col1" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle"> -->
+<!-- 	                                <div id="pieDiv0" data-highcharts-chart="2"> -->
+<!-- 	                                    <div id="highcharts-vqcawg2-11" class="highcharts-container " style="position: relative; overflow: hidden; width: 210px; height: 150px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); font-family: GeInspira, &quot;Source Sans Pro&quot;, sans-serif;"> -->
+<!-- 	                                        <svg version="1.1" class="highcharts-root" style="font-family:GeInspira, &#39;Source Sans Pro&#39;, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="210" height="150" viewBox="0 0 210 150"> -->
+<!-- 	                                            <desc>Created with Highcharts 5.0.12</desc> -->
+<!-- 	                                            <defs> -->
+<!-- 	                                                <lineargradient x1="0" y1="0" x2="0" y2="1" id="highcharts-vqcawg2-12"> -->
+<!-- 	                                                    <stop offset="0" stop-color="rgb(96, 96, 96)" stop-opacity="1"> -->
+<!-- 	                                                    </stop> -->
+<!-- 	                                                    <stop offset="1" stop-color="rgb(16, 16, 16)" stop-opacity="1"></stop> -->
+<!-- 	                                                </lineargradient> -->
+<!-- 	                                                <clippath id="highcharts-vqcawg2-13"> -->
+<!-- 	                                                    <rect x="0" y="0" width="195" height="150" fill="none"></rect> -->
+<!-- 	                                                </clippath> -->
+<!-- 	                                            </defs> -->
+<!-- 	                                            <rect fill="url(#highcharts-vqcawg2-12)" class="highcharts-background" x="0" y="0" width="210" height="150" rx="0" ry="0"></rect> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-background" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-pane-group"></g> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-border" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-series-group"> -->
+<!-- 	                                                <g class="highcharts-series highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)"> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 85.15401386002387 28.097690608760885 A 48.5 48.5 0 0 0 59.58749153241035 44.752823244227514 Z" class="highcharts-halo highcharts-color-2" fill-opacity="0.25"></path> -->
+<!-- 	                                                    <path fill="RGB(105,210,231)" d="M 97.49012184962078 26.50000100595728 A 48.5 48.5 0 1 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 1 0 97.49604873984832 55.60000040238291 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-0 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,172,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-1"></path> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 92.56160554400954 56.23907624350436 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-2 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,67,46)" d="M 85.20092233459062 28.085368075831312 A 48.5 48.5 0 0 1 97.43263447300353 26.50004678470532 L 97.47305378920142 55.60001871388213 A 19.4 19.4 0 0 0 92.58036893383624 56.234147230332525 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-3 "></path> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-markers highcharts-series-0 highcharts-pie-series highcharts-color-undefined " transform="translate(15,0) scale(1 1)"></g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <text x="105" text-anchor="middle" class="highcharts-title" style="color:#E0E0E3;font-size:20px;text-transform:uppercase;fill:#E0E0E3;" y="15"> -->
+<!-- 	                                                <tspan style="font-size:15px;">ATB_4B</tspan> -->
+<!-- 	                                            </text> -->
+<!-- 	                                            <g class="highcharts-data-labels highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)" opacity="1"> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-0" stroke="RGB(105,210,231)" stroke-width="1" d="M 124.41112882543666 120.49892782907217 C 119.41112882543666 120.49892782907217 118.89046833849562 119.41776518758927 118.7169148428486 119.0573776404283 L 118.54336134720157 118.69699009326733"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-1" stroke="RGB(255,172,0)" stroke-width="1" d="M 42.20089464016283 70.5 C 47.20089464016283 70.5 58.955707914326126 44.26195276836444 59.268440507313336 44.51134868910793 L 59.581173100300546 44.76074460985143"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-2" stroke="RGB(177,235,0)" stroke-width="1" d="M 50.14436283090526 47.5 C 55.14436283090526 47.5 70.60512937031996 33.68225642883225 70.82334333080418 34.017491670788985 L 71.0415572912884 34.35272691274572"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-3" stroke="RGB(255,67,46)" stroke-width="1" d="M 86.04220333493251 24.5 C 91.04220333493251 24.5 91.19565592895387 26.10475231851396 91.24680679362767 26.50146832404326 L 91.29795765830147 26.89818432957256"></path> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-0 " transform="translate(129,110)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">85.7%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">85.7%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-1 " transform="translate(2,61)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">0.0%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">0.0%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-2 " transform="translate(4,38)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">10.2%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">10.2%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-3 " transform="translate(46,15)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">4.1%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">4.1%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-legend"> -->
+<!-- 	                                                <rect fill="none" class="highcharts-legend-box" rx="0" ry="0" x="0" y="0" width="8" height="8" visibility="hidden"></rect> -->
+<!-- 	                                                <g> -->
+<!-- 	                                                    <g></g> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-label highcharts-tooltip highcharts-color-2" style="cursor:default;pointer-events:none;white-space:nowrap;" transform="translate(1,-9999)" opacity="0" visibility="visible"> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="rgba(0, 0, 0, 0.85)" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="RGB(177,235,0)" stroke-width="1"></path> -->
+<!-- 	                                                <text x="8" style="font-size:12px;color:#F0F0F0;fill:#F0F0F0;" y="20"> -->
+<!-- 	                                                    <tspan style="font-size:11px">ATB_4B</tspan> -->
+<!-- 	                                                    <tspan style="fill:RGB(177,235,0)" x="8" dy="15">ABNR</tspan> -->
+<!-- 	                                                    <tspan dx="0">: </tspan> -->
+<!-- 	                                                    <tspan style="font-weight:bold" dx="0">10.20%</tspan> -->
+<!-- 	                                                    <tspan dx="0"> of total</tspan> -->
+<!-- 	                                                </text> -->
+<!-- 	                                            </g> -->
+<!-- 	                                        </svg> -->
+<!-- 	                                    </div> -->
+<!-- 	                                </div> -->
+<!-- 	                            </div> -->
+<!-- 	                            <div id="col2" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle"> -->
+<!-- 	                                <div id="pieDiv0" data-highcharts-chart="2"> -->
+<!-- 	                                    <div id="highcharts-vqcawg2-11" class="highcharts-container " style="position: relative; overflow: hidden; width: 210px; height: 150px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); font-family: GeInspira, &quot;Source Sans Pro&quot;, sans-serif;"> -->
+<!-- 	                                        <svg version="1.1" class="highcharts-root" style="font-family:GeInspira, &#39;Source Sans Pro&#39;, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="210" height="150" viewBox="0 0 210 150"> -->
+<!-- 	                                            <desc>Created with Highcharts 5.0.12</desc> -->
+<!-- 	                                            <defs> -->
+<!-- 	                                                <lineargradient x1="0" y1="0" x2="0" y2="1" id="highcharts-vqcawg2-12"> -->
+<!-- 	                                                    <stop offset="0" stop-color="rgb(96, 96, 96)" stop-opacity="1"> -->
+<!-- 	                                                    </stop> -->
+<!-- 	                                                    <stop offset="1" stop-color="rgb(16, 16, 16)" stop-opacity="1"></stop> -->
+<!-- 	                                                </lineargradient> -->
+<!-- 	                                                <clippath id="highcharts-vqcawg2-13"> -->
+<!-- 	                                                    <rect x="0" y="0" width="195" height="150" fill="none"></rect> -->
+<!-- 	                                                </clippath> -->
+<!-- 	                                            </defs> -->
+<!-- 	                                            <rect fill="url(#highcharts-vqcawg2-12)" class="highcharts-background" x="0" y="0" width="210" height="150" rx="0" ry="0"></rect> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-background" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-pane-group"></g> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-border" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-series-group"> -->
+<!-- 	                                                <g class="highcharts-series highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)"> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 85.15401386002387 28.097690608760885 A 48.5 48.5 0 0 0 59.58749153241035 44.752823244227514 Z" class="highcharts-halo highcharts-color-2" fill-opacity="0.25"></path> -->
+<!-- 	                                                    <path fill="RGB(105,210,231)" d="M 97.49012184962078 26.50000100595728 A 48.5 48.5 0 1 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 1 0 97.49604873984832 55.60000040238291 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-0 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,172,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-1"></path> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 92.56160554400954 56.23907624350436 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-2 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,67,46)" d="M 85.20092233459062 28.085368075831312 A 48.5 48.5 0 0 1 97.43263447300353 26.50004678470532 L 97.47305378920142 55.60001871388213 A 19.4 19.4 0 0 0 92.58036893383624 56.234147230332525 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-3 "></path> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-markers highcharts-series-0 highcharts-pie-series highcharts-color-undefined " transform="translate(15,0) scale(1 1)"></g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <text x="105" text-anchor="middle" class="highcharts-title" style="color:#E0E0E3;font-size:20px;text-transform:uppercase;fill:#E0E0E3;" y="15"> -->
+<!-- 	                                                <tspan style="font-size:15px;">ATB_4B</tspan> -->
+<!-- 	                                            </text> -->
+<!-- 	                                            <g class="highcharts-data-labels highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)" opacity="1"> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-0" stroke="RGB(105,210,231)" stroke-width="1" d="M 124.41112882543666 120.49892782907217 C 119.41112882543666 120.49892782907217 118.89046833849562 119.41776518758927 118.7169148428486 119.0573776404283 L 118.54336134720157 118.69699009326733"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-1" stroke="RGB(255,172,0)" stroke-width="1" d="M 42.20089464016283 70.5 C 47.20089464016283 70.5 58.955707914326126 44.26195276836444 59.268440507313336 44.51134868910793 L 59.581173100300546 44.76074460985143"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-2" stroke="RGB(177,235,0)" stroke-width="1" d="M 50.14436283090526 47.5 C 55.14436283090526 47.5 70.60512937031996 33.68225642883225 70.82334333080418 34.017491670788985 L 71.0415572912884 34.35272691274572"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-3" stroke="RGB(255,67,46)" stroke-width="1" d="M 86.04220333493251 24.5 C 91.04220333493251 24.5 91.19565592895387 26.10475231851396 91.24680679362767 26.50146832404326 L 91.29795765830147 26.89818432957256"></path> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-0 " transform="translate(129,110)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">85.7%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">85.7%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-1 " transform="translate(2,61)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">0.0%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">0.0%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-2 " transform="translate(4,38)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">10.2%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">10.2%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-3 " transform="translate(46,15)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">4.1%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">4.1%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-legend"> -->
+<!-- 	                                                <rect fill="none" class="highcharts-legend-box" rx="0" ry="0" x="0" y="0" width="8" height="8" visibility="hidden"></rect> -->
+<!-- 	                                                <g> -->
+<!-- 	                                                    <g></g> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-label highcharts-tooltip highcharts-color-2" style="cursor:default;pointer-events:none;white-space:nowrap;" transform="translate(1,-9999)" opacity="0" visibility="visible"> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="rgba(0, 0, 0, 0.85)" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="RGB(177,235,0)" stroke-width="1"></path> -->
+<!-- 	                                                <text x="8" style="font-size:12px;color:#F0F0F0;fill:#F0F0F0;" y="20"> -->
+<!-- 	                                                    <tspan style="font-size:11px">ATB_4B</tspan> -->
+<!-- 	                                                    <tspan style="fill:RGB(177,235,0)" x="8" dy="15">ABNR</tspan> -->
+<!-- 	                                                    <tspan dx="0">: </tspan> -->
+<!-- 	                                                    <tspan style="font-weight:bold" dx="0">10.20%</tspan> -->
+<!-- 	                                                    <tspan dx="0"> of total</tspan> -->
+<!-- 	                                                </text> -->
+<!-- 	                                            </g> -->
+<!-- 	                                        </svg> -->
+<!-- 	                                    </div> -->
+<!-- 	                                </div> -->
+<!-- 	                            </div> -->
+<!-- 	                        </div> -->
+<!-- 	                        <div class="row rowStyle" id="Row1"> -->
+<!-- 	                            <div id="col0" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle"> -->
+<!-- 	                                <div id="pieDiv0" data-highcharts-chart="2"> -->
+<!-- 	                                    <div id="highcharts-vqcawg2-11" class="highcharts-container " style="position: relative; overflow: hidden; width: 210px; height: 150px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); font-family: GeInspira, &quot;Source Sans Pro&quot;, sans-serif;"> -->
+<!-- 	                                        <svg version="1.1" class="highcharts-root" style="font-family:GeInspira, &#39;Source Sans Pro&#39;, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="210" height="150" viewBox="0 0 210 150"> -->
+<!-- 	                                            <desc>Created with Highcharts 5.0.12</desc> -->
+<!-- 	                                            <defs> -->
+<!-- 	                                                <lineargradient x1="0" y1="0" x2="0" y2="1" id="highcharts-vqcawg2-12"> -->
+<!-- 	                                                    <stop offset="0" stop-color="rgb(96, 96, 96)" stop-opacity="1"> -->
+<!-- 	                                                    </stop> -->
+<!-- 	                                                    <stop offset="1" stop-color="rgb(16, 16, 16)" stop-opacity="1"></stop> -->
+<!-- 	                                                </lineargradient> -->
+<!-- 	                                                <clippath id="highcharts-vqcawg2-13"> -->
+<!-- 	                                                    <rect x="0" y="0" width="195" height="150" fill="none"></rect> -->
+<!-- 	                                                </clippath> -->
+<!-- 	                                            </defs> -->
+<!-- 	                                            <rect fill="url(#highcharts-vqcawg2-12)" class="highcharts-background" x="0" y="0" width="210" height="150" rx="0" ry="0"></rect> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-background" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-pane-group"></g> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-border" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-series-group"> -->
+<!-- 	                                                <g class="highcharts-series highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)"> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 85.15401386002387 28.097690608760885 A 48.5 48.5 0 0 0 59.58749153241035 44.752823244227514 Z" class="highcharts-halo highcharts-color-2" fill-opacity="0.25"></path> -->
+<!-- 	                                                    <path fill="RGB(105,210,231)" d="M 97.49012184962078 26.50000100595728 A 48.5 48.5 0 1 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 1 0 97.49604873984832 55.60000040238291 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-0 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,172,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-1"></path> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 92.56160554400954 56.23907624350436 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-2 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,67,46)" d="M 85.20092233459062 28.085368075831312 A 48.5 48.5 0 0 1 97.43263447300353 26.50004678470532 L 97.47305378920142 55.60001871388213 A 19.4 19.4 0 0 0 92.58036893383624 56.234147230332525 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-3 "></path> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-markers highcharts-series-0 highcharts-pie-series highcharts-color-undefined " transform="translate(15,0) scale(1 1)"></g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <text x="105" text-anchor="middle" class="highcharts-title" style="color:#E0E0E3;font-size:20px;text-transform:uppercase;fill:#E0E0E3;" y="15"> -->
+<!-- 	                                                <tspan style="font-size:15px;">ATB_4B</tspan> -->
+<!-- 	                                            </text> -->
+<!-- 	                                            <g class="highcharts-data-labels highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)" opacity="1"> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-0" stroke="RGB(105,210,231)" stroke-width="1" d="M 124.41112882543666 120.49892782907217 C 119.41112882543666 120.49892782907217 118.89046833849562 119.41776518758927 118.7169148428486 119.0573776404283 L 118.54336134720157 118.69699009326733"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-1" stroke="RGB(255,172,0)" stroke-width="1" d="M 42.20089464016283 70.5 C 47.20089464016283 70.5 58.955707914326126 44.26195276836444 59.268440507313336 44.51134868910793 L 59.581173100300546 44.76074460985143"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-2" stroke="RGB(177,235,0)" stroke-width="1" d="M 50.14436283090526 47.5 C 55.14436283090526 47.5 70.60512937031996 33.68225642883225 70.82334333080418 34.017491670788985 L 71.0415572912884 34.35272691274572"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-3" stroke="RGB(255,67,46)" stroke-width="1" d="M 86.04220333493251 24.5 C 91.04220333493251 24.5 91.19565592895387 26.10475231851396 91.24680679362767 26.50146832404326 L 91.29795765830147 26.89818432957256"></path> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-0 " transform="translate(129,110)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">85.7%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">85.7%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-1 " transform="translate(2,61)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">0.0%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">0.0%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-2 " transform="translate(4,38)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">10.2%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">10.2%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-3 " transform="translate(46,15)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">4.1%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">4.1%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-legend"> -->
+<!-- 	                                                <rect fill="none" class="highcharts-legend-box" rx="0" ry="0" x="0" y="0" width="8" height="8" visibility="hidden"></rect> -->
+<!-- 	                                                <g> -->
+<!-- 	                                                    <g></g> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-label highcharts-tooltip highcharts-color-2" style="cursor:default;pointer-events:none;white-space:nowrap;" transform="translate(1,-9999)" opacity="0" visibility="visible"> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="rgba(0, 0, 0, 0.85)" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="RGB(177,235,0)" stroke-width="1"></path> -->
+<!-- 	                                                <text x="8" style="font-size:12px;color:#F0F0F0;fill:#F0F0F0;" y="20"> -->
+<!-- 	                                                    <tspan style="font-size:11px">ATB_4B</tspan> -->
+<!-- 	                                                    <tspan style="fill:RGB(177,235,0)" x="8" dy="15">ABNR</tspan> -->
+<!-- 	                                                    <tspan dx="0">: </tspan> -->
+<!-- 	                                                    <tspan style="font-weight:bold" dx="0">10.20%</tspan> -->
+<!-- 	                                                    <tspan dx="0"> of total</tspan> -->
+<!-- 	                                                </text> -->
+<!-- 	                                            </g> -->
+<!-- 	                                        </svg> -->
+<!-- 	                                    </div> -->
+<!-- 	                                </div> -->
+<!-- 	                            </div> -->
+<!-- 	                            <div id="col1" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle"> -->
+<!-- 	                                <div id="pieDiv0" data-highcharts-chart="2"> -->
+<!-- 	                                    <div id="highcharts-vqcawg2-11" class="highcharts-container " style="position: relative; overflow: hidden; width: 210px; height: 150px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); font-family: GeInspira, &quot;Source Sans Pro&quot;, sans-serif;"> -->
+<!-- 	                                        <svg version="1.1" class="highcharts-root" style="font-family:GeInspira, &#39;Source Sans Pro&#39;, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="210" height="150" viewBox="0 0 210 150"> -->
+<!-- 	                                            <desc>Created with Highcharts 5.0.12</desc> -->
+<!-- 	                                            <defs> -->
+<!-- 	                                                <lineargradient x1="0" y1="0" x2="0" y2="1" id="highcharts-vqcawg2-12"> -->
+<!-- 	                                                    <stop offset="0" stop-color="rgb(96, 96, 96)" stop-opacity="1"> -->
+<!-- 	                                                    </stop> -->
+<!-- 	                                                    <stop offset="1" stop-color="rgb(16, 16, 16)" stop-opacity="1"></stop> -->
+<!-- 	                                                </lineargradient> -->
+<!-- 	                                                <clippath id="highcharts-vqcawg2-13"> -->
+<!-- 	                                                    <rect x="0" y="0" width="195" height="150" fill="none"></rect> -->
+<!-- 	                                                </clippath> -->
+<!-- 	                                            </defs> -->
+<!-- 	                                            <rect fill="url(#highcharts-vqcawg2-12)" class="highcharts-background" x="0" y="0" width="210" height="150" rx="0" ry="0"></rect> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-background" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-pane-group"></g> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-border" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-series-group"> -->
+<!-- 	                                                <g class="highcharts-series highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)"> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 85.15401386002387 28.097690608760885 A 48.5 48.5 0 0 0 59.58749153241035 44.752823244227514 Z" class="highcharts-halo highcharts-color-2" fill-opacity="0.25"></path> -->
+<!-- 	                                                    <path fill="RGB(105,210,231)" d="M 97.49012184962078 26.50000100595728 A 48.5 48.5 0 1 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 1 0 97.49604873984832 55.60000040238291 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-0 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,172,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-1"></path> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 92.56160554400954 56.23907624350436 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-2 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,67,46)" d="M 85.20092233459062 28.085368075831312 A 48.5 48.5 0 0 1 97.43263447300353 26.50004678470532 L 97.47305378920142 55.60001871388213 A 19.4 19.4 0 0 0 92.58036893383624 56.234147230332525 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-3 "></path> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-markers highcharts-series-0 highcharts-pie-series highcharts-color-undefined " transform="translate(15,0) scale(1 1)"></g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <text x="105" text-anchor="middle" class="highcharts-title" style="color:#E0E0E3;font-size:20px;text-transform:uppercase;fill:#E0E0E3;" y="15"> -->
+<!-- 	                                                <tspan style="font-size:15px;">ATB_4B</tspan> -->
+<!-- 	                                            </text> -->
+<!-- 	                                            <g class="highcharts-data-labels highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)" opacity="1"> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-0" stroke="RGB(105,210,231)" stroke-width="1" d="M 124.41112882543666 120.49892782907217 C 119.41112882543666 120.49892782907217 118.89046833849562 119.41776518758927 118.7169148428486 119.0573776404283 L 118.54336134720157 118.69699009326733"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-1" stroke="RGB(255,172,0)" stroke-width="1" d="M 42.20089464016283 70.5 C 47.20089464016283 70.5 58.955707914326126 44.26195276836444 59.268440507313336 44.51134868910793 L 59.581173100300546 44.76074460985143"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-2" stroke="RGB(177,235,0)" stroke-width="1" d="M 50.14436283090526 47.5 C 55.14436283090526 47.5 70.60512937031996 33.68225642883225 70.82334333080418 34.017491670788985 L 71.0415572912884 34.35272691274572"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-3" stroke="RGB(255,67,46)" stroke-width="1" d="M 86.04220333493251 24.5 C 91.04220333493251 24.5 91.19565592895387 26.10475231851396 91.24680679362767 26.50146832404326 L 91.29795765830147 26.89818432957256"></path> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-0 " transform="translate(129,110)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">85.7%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">85.7%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-1 " transform="translate(2,61)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">0.0%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">0.0%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-2 " transform="translate(4,38)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">10.2%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">10.2%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-3 " transform="translate(46,15)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">4.1%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">4.1%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-legend"> -->
+<!-- 	                                                <rect fill="none" class="highcharts-legend-box" rx="0" ry="0" x="0" y="0" width="8" height="8" visibility="hidden"></rect> -->
+<!-- 	                                                <g> -->
+<!-- 	                                                    <g></g> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-label highcharts-tooltip highcharts-color-2" style="cursor:default;pointer-events:none;white-space:nowrap;" transform="translate(1,-9999)" opacity="0" visibility="visible"> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="rgba(0, 0, 0, 0.85)" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="RGB(177,235,0)" stroke-width="1"></path> -->
+<!-- 	                                                <text x="8" style="font-size:12px;color:#F0F0F0;fill:#F0F0F0;" y="20"> -->
+<!-- 	                                                    <tspan style="font-size:11px">ATB_4B</tspan> -->
+<!-- 	                                                    <tspan style="fill:RGB(177,235,0)" x="8" dy="15">ABNR</tspan> -->
+<!-- 	                                                    <tspan dx="0">: </tspan> -->
+<!-- 	                                                    <tspan style="font-weight:bold" dx="0">10.20%</tspan> -->
+<!-- 	                                                    <tspan dx="0"> of total</tspan> -->
+<!-- 	                                                </text> -->
+<!-- 	                                            </g> -->
+<!-- 	                                        </svg> -->
+<!-- 	                                    </div> -->
+<!-- 	                                </div> -->
+<!-- 	                            </div> -->
+<!-- 	                            <div id="col2" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle"> -->
+<!-- 	                                <div id="pieDiv0" data-highcharts-chart="2"> -->
+<!-- 	                                    <div id="highcharts-vqcawg2-11" class="highcharts-container " style="position: relative; overflow: hidden; width: 210px; height: 150px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); font-family: GeInspira, &quot;Source Sans Pro&quot;, sans-serif;"> -->
+<!-- 	                                        <svg version="1.1" class="highcharts-root" style="font-family:GeInspira, &#39;Source Sans Pro&#39;, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="210" height="150" viewBox="0 0 210 150"> -->
+<!-- 	                                            <desc>Created with Highcharts 5.0.12</desc> -->
+<!-- 	                                            <defs> -->
+<!-- 	                                                <lineargradient x1="0" y1="0" x2="0" y2="1" id="highcharts-vqcawg2-12"> -->
+<!-- 	                                                    <stop offset="0" stop-color="rgb(96, 96, 96)" stop-opacity="1"> -->
+<!-- 	                                                    </stop> -->
+<!-- 	                                                    <stop offset="1" stop-color="rgb(16, 16, 16)" stop-opacity="1"></stop> -->
+<!-- 	                                                </lineargradient> -->
+<!-- 	                                                <clippath id="highcharts-vqcawg2-13"> -->
+<!-- 	                                                    <rect x="0" y="0" width="195" height="150" fill="none"></rect> -->
+<!-- 	                                                </clippath> -->
+<!-- 	                                            </defs> -->
+<!-- 	                                            <rect fill="url(#highcharts-vqcawg2-12)" class="highcharts-background" x="0" y="0" width="210" height="150" rx="0" ry="0"></rect> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-background" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-pane-group"></g> -->
+<!-- 	                                            <rect fill="none" class="highcharts-plot-border" x="15" y="0" width="195" height="150"></rect> -->
+<!-- 	                                            <g class="highcharts-series-group"> -->
+<!-- 	                                                <g class="highcharts-series highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)"> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 85.15401386002387 28.097690608760885 A 48.5 48.5 0 0 0 59.58749153241035 44.752823244227514 Z" class="highcharts-halo highcharts-color-2" fill-opacity="0.25"></path> -->
+<!-- 	                                                    <path fill="RGB(105,210,231)" d="M 97.49012184962078 26.50000100595728 A 48.5 48.5 0 1 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 1 0 97.49604873984832 55.60000040238291 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-0 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,172,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 59.557263316948436 44.790750869963475 L 82.32290532677938 62.91630034798539 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-1"></path> -->
+<!-- 	                                                    <path fill="RGB(177,235,0)" d="M 59.58749153241035 44.752823244227514 A 48.5 48.5 0 0 1 85.15401386002387 28.097690608760885 L 92.56160554400954 56.23907624350436 A 19.4 19.4 0 0 0 82.33499661296415 62.90112929769101 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-2 "></path> -->
+<!-- 	                                                    <path fill="RGB(255,67,46)" d="M 85.20092233459062 28.085368075831312 A 48.5 48.5 0 0 1 97.43263447300353 26.50004678470532 L 97.47305378920142 55.60001871388213 A 19.4 19.4 0 0 0 92.58036893383624 56.234147230332525 Z" transform="translate(0,0)" stroke-linejoin="round" class="highcharts-point highcharts-color-3 "></path> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-markers highcharts-series-0 highcharts-pie-series highcharts-color-undefined " transform="translate(15,0) scale(1 1)"></g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <text x="105" text-anchor="middle" class="highcharts-title" style="color:#E0E0E3;font-size:20px;text-transform:uppercase;fill:#E0E0E3;" y="15"> -->
+<!-- 	                                                <tspan style="font-size:15px;">ATB_4B</tspan> -->
+<!-- 	                                            </text> -->
+<!-- 	                                            <g class="highcharts-data-labels highcharts-series-0 highcharts-pie-series highcharts-color-undefined highcharts-tracker " transform="translate(15,0) scale(1 1)" opacity="1"> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-0" stroke="RGB(105,210,231)" stroke-width="1" d="M 124.41112882543666 120.49892782907217 C 119.41112882543666 120.49892782907217 118.89046833849562 119.41776518758927 118.7169148428486 119.0573776404283 L 118.54336134720157 118.69699009326733"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-1" stroke="RGB(255,172,0)" stroke-width="1" d="M 42.20089464016283 70.5 C 47.20089464016283 70.5 58.955707914326126 44.26195276836444 59.268440507313336 44.51134868910793 L 59.581173100300546 44.76074460985143"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-2" stroke="RGB(177,235,0)" stroke-width="1" d="M 50.14436283090526 47.5 C 55.14436283090526 47.5 70.60512937031996 33.68225642883225 70.82334333080418 34.017491670788985 L 71.0415572912884 34.35272691274572"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-data-label-connector highcharts-color-3" stroke="RGB(255,67,46)" stroke-width="1" d="M 86.04220333493251 24.5 C 91.04220333493251 24.5 91.19565592895387 26.10475231851396 91.24680679362767 26.50146832404326 L 91.29795765830147 26.89818432957256"></path> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-0 " transform="translate(129,110)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">85.7%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">85.7%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-1 " transform="translate(2,61)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">0.0%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">0.0%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-2 " transform="translate(4,38)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">10.2%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">10.2%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                                <g class="highcharts-label highcharts-data-label highcharts-data-label-color-3 " transform="translate(46,15)"> -->
+<!-- 	                                                    <text x="5" style="font-size:11px;font-weight:bold;color:#B0B0B3;fill:#B0B0B3;" y="16"> -->
+<!-- 	                                                        <tspan x="5" y="16" class="highcharts-text-outline" fill="#000000" stroke="#000000" stroke-width="2px" stroke-linejoin="round">4.1%</tspan> -->
+<!-- 	                                                        <tspan x="5" y="16">4.1%</tspan> -->
+<!-- 	                                                    </text> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-legend"> -->
+<!-- 	                                                <rect fill="none" class="highcharts-legend-box" rx="0" ry="0" x="0" y="0" width="8" height="8" visibility="hidden"></rect> -->
+<!-- 	                                                <g> -->
+<!-- 	                                                    <g></g> -->
+<!-- 	                                                </g> -->
+<!-- 	                                            </g> -->
+<!-- 	                                            <g class="highcharts-label highcharts-tooltip highcharts-color-2" style="cursor:default;pointer-events:none;white-space:nowrap;" transform="translate(1,-9999)" opacity="0" visibility="visible"> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="none" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="#000000" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path> -->
+<!-- 	                                                <path fill="rgba(0, 0, 0, 0.85)" class="highcharts-label-box highcharts-tooltip-box" d="M 3.5 0.5 L 126.5 0.5 C 129.5 0.5 129.5 0.5 129.5 3.5 L 129.5 41.5 C 129.5 44.5 129.5 44.5 126.5 44.5 L 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="RGB(177,235,0)" stroke-width="1"></path> -->
+<!-- 	                                                <text x="8" style="font-size:12px;color:#F0F0F0;fill:#F0F0F0;" y="20"> -->
+<!-- 	                                                    <tspan style="font-size:11px">ATB_4B</tspan> -->
+<!-- 	                                                    <tspan style="fill:RGB(177,235,0)" x="8" dy="15">ABNR</tspan> -->
+<!-- 	                                                    <tspan dx="0">: </tspan> -->
+<!-- 	                                                    <tspan style="font-weight:bold" dx="0">10.20%</tspan> -->
+<!-- 	                                                    <tspan dx="0"> of total</tspan> -->
+<!-- 	                                                </text> -->
+<!-- 	                                            </g> -->
+<!-- 	                                        </svg> -->
+<!-- 	                                    </div> -->
+<!-- 	                                </div> -->
+<!-- 	                            </div> -->
+<!-- 	                        </div> -->
+<!-- 	                	</div> -->
+<!-- 	                </div> -->
+
+          <div class="row rowStyle" id="Row1">
+                                <div id="col0" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv1" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                               
+                                <div id="col1" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv2" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col2" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv13" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col3" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv4" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowStyle" id="Row2">
+                                <div id="col0" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv5" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <!--<div id="containerChart1" class="chartDivStyle" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">hasdfasdasdasdasd</div>-->
+                                <div id="col1" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv6" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col2" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv7" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col3" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv8" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowStyle" id="Row3">
+                                <div id="col0" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv9" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <!--<div id="containerChart1" class="chartDivStyle" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">hasdfasdasdasdasd</div>-->
+                                <div id="col1" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv10" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col2" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv11" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col3" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv12" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                            </div>
+                </section>
+            </form>
+        </aside>
+        </div>
+        <div class="modal fade" id="onlineAssets" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-size: 20px; display: inline">Online Assets</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Asset Name</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Turbine 1</td>
+                                    <td>New York</td>
+                                </tr>
+                                <tr>
+                                    <td>Turbine 2</td>
+                                    <td>Daman</td>
+                                </tr>
+                                <tr>
+                                    <td>Turbine 3</td>
+                                    <td>Florida</td>
+                                </tr>
+                                <tr>
+                                    <td>Turbine 4</td>
+                                    <td>Dubai</td>
+                                </tr>
+                                <tr>
+                                    <td>Turbine 5</td>
+                                    <td>Singapore</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="offlineAssets" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-size: 20px; display: inline">Offline Assets</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Asset Name</th>
+                                    <th>Location</th>
+                                    <th>Datetime</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Turbine 6</td>
+                                    <td>Mumbai</td>
+                                    <td>12 July 2014</td>
+                                </tr>
+                                <tr>
+                                    <td>Turbine 7</td>
+                                    <td>Saudi</td>
+                                    <td>12 July 2017</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="assetsWithIssues" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-size: 20px; display: inline">Assets with Issues</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Asset Name</th>
+                                    <th>Location</th>
+                                    <th>Case No.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Turbine 8</td>
+                                    <td>Mumbai</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Turbine 9</td>
+                                    <td>Germany</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Turbine 10</td>
+                                    <td>Saudi</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>Turbine 11</td>
+                                    <td>Kolkata</td>
+                                    <td>4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- jQuery 2.2.3 -->
+        <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script src="css/bootstrap/3.2.0/css/bootstrap.min.js" type="text/javascript"></script>
+        <!-- FLOT CHARTS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+        <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.resize.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js" type="text/javascript"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js" type="text/javascript"></script>
+        <script src="https://code.highcharts.com/modules/solid-gauge.js" type="text/javascript"></script>
+        <script src="https://code.highcharts.com/modules/drilldown.js" type="text/javascript"></script>
+        <!-- ChartJS 1.0.1 -->
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
+        <script src="js/app.js"></script>
+         <script src="js/app-custom.js"></script>
+        
+      
+ 
+        
+	</body>
+</html>

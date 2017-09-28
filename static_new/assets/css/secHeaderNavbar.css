@@ -1,0 +1,153 @@
+::-webkit-scrollbar {
+	width: 8px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-button {
+	background-color: #8FD6F5;
+}
+
+::-webkit-scrollbar-track {
+	background-color: #333;
+}
+
+::-webkit-scrollbar-track-piece {
+	background-color: #333;
+}
+
+::-webkit-scrollbar-thumb {
+	height: 50px;
+	background-color: #8FD6F5;
+	border-radius: 15px;
+}
+
+::-webkit-scrollbar-corner {
+	background-color: #fff;
+}
+
+::-webkit-resizer {
+	background-color: #d3d3d3;
+}
+
+body,
+html{
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+
+#pleaseWaitDialog {
+	position: fixed;
+	top: 30%;
+}
+
+.activeDurationBtn {
+    color: #fff !important;
+    background-color: #337ab7 !important;
+    border-color: #2e6da4 !important;
+} 
+
+.Box-Color {
+	background-color: #428bca !important;
+}
+
+.left-side {
+	position: fixed !important;
+}
+
+body {
+	padding-top: 50px;
+}
+
+body>.header {
+	position: fixed !important;
+}
+
+.chartDivStyle {
+	padding-top: 15px !important;
+	border-radius: 20px !important;
+}
+
+.rowStyle {
+	margin-bottom: 15px !important;
+}
+
+.highcharts-container {
+	position: inherit !important;
+	border-radius: 20px !important;
+	/* width:100% !important;
+				height:100% !important;  */
+}
+
+.highcharts-tooltip {
+	z-index: 9998;
+}
+
+.skin-black .navbar .nav>li>a, .skin-black .navbar .nav>li>a:hover,
+	.skin-black .navbar .nav>li>a:focus, .skin-black .navbar .nav .open>a,
+	.skin-black .navbar .nav .open>a:hover, .skin-black .navbar .nav .open>a:focus
+	{
+	color: #c00;
+	background-color: transparent;
+}
+
+.navbar-nav>.notifications-menu>.dropdown-menu>li.header, .navbar-nav>.messages-menu>.dropdown-menu>li.header,
+	.navbar-nav>.tasks-menu>.dropdown-menu>li.header {
+	background-color: #d3d3d3;
+	color: #000000;
+}
+
+.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a>.glyphicon,
+	.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a>.fa,
+	.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a>.ion {
+	background-color: transparent;
+}
+
+.box {
+	background: transparent;
+}
+
+.box-title {
+	color: #fff;
+}
+
+.flot-text {
+	color: #fff !important;
+}
+
+#map {
+	height: 50%;
+}
+
+.textLimit {
+	display: block;
+	width: 150px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.table-text-size {
+	font-size: 12px;
+}
+
+.sliderContainer {
+	margin: 0 50px;
+}
+
+.dotLegend {
+	border-radius: 50%;
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+}
+
+.dotColor {
+	background: #20a0ff;
+}
+
+.gdotColor {
+	background: #40b060;
+}

@@ -1,0 +1,159 @@
+ <aside onload="LoadPieChartData()" class="right-side" style="background:transparent;" ng-controller="dashboardController">
+            <section class="content-header" style="background-color:#333;">
+                <h1 style="color:#fff;">
+                    Dashboard
+                    <small><span /></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#" style="color:#fff !important;"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li><a href="#" class="active" style="color:#fff !important;">Dashboard</a></li>
+                </ol>
+            </section>
+            <form id="form1" runat="server" method="POST" enctype="multipart/form-data">
+                <input id="emailHdn" type="hidden" value="" />
+                <section class="content invoice" id="target" style="background:transparent;border: none !important;">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <!-- small box -->
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>5</h3>
+                                    <p>Online Assets</p>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#onlineAssets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-xs-4">
+                            <!-- small box -->
+                            <div class="small-box bg-red">
+                                <div class="inner">
+                                    <h3>2</h3>
+                                    <p>Offline Assets</p>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#offlineAssets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-xs-4">
+                            <!-- small box -->
+                            <div class="small-box bg-yellow">
+                                <div class="inner">
+                                    <h3>4</h3>
+                                    <p>Assets with issues</p>
+                                </div>
+                                <a href="#" data-toggle="modal" data-target="#assetsWithIssues" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-7 col-md-7 col-lg-7">
+							<!-- interactive chart -->
+							<div class="box" style="height:300px;border-radius:20px;border: 2px solid #8FD6F5; background-color: #444;">
+								<div class="box-header with-border">
+									<h3 class="box-title">Power Output</h3>
+									<div class="box-tools pull-right">
+										<span style="color: #fff">Real time</span>
+										<div class="btn-group" id="realtime" data-toggle="btn-toggle">
+											<button type="button" class="btn btn-success btn-xs active" data-toggle="on">On</button>
+											<button type="button" class="btn btn-danger btn-xs" data-toggle="off">Off</button>
+										</div>
+									</div>
+								</div>
+								<div class="box-body">
+									<div id="interactive" style="height: 230px;"></div>
+								</div>
+								<!-- /.box-body-->
+							</div>
+							<!-- /.box -->
+                        </div>
+                        <div class="col-sm-5 col-md-5 col-lg-5">
+							<!-- BAR CHART -->
+                            <div class="box" style="height:300px;border-radius:20px;border: 2px solid #8FD6F5; background-color: #444;">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Power History</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="barChart" height="165px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                    <hr style="font-weight:bold;border: none !important;" />
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div id="Div1" style="font-family:GeInspira, 'Source Sans Pro', sans-serif;color: #fff;">
+                                <span style="color:RGB(105,210,231);">&#9632;</span> RS  : Run Success &nbsp;&nbsp;&nbsp;
+                                <span style="color:RGB(255,172,0);">&#9632;</span> RF  : Run Failure &nbsp;&nbsp;&nbsp;
+                                <span style="color:RGB(177,235,0);">&#9632;</span> ABNR  : Applicable But Not Run &nbsp;&nbsp;&nbsp;
+                                <span style="color:RGB(255,67,46);">&#9632;</span> CG  : Configuration Gap (Underdeployed/Overdeployed)
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="font-weight:bold;border: none !important;" />
+
+          <div class="row rowStyle" id="Row1">
+                                <div id="col0" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv1" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                               
+                                <div id="col1" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv2" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col2" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv13" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col3" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv4" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowStyle" id="Row2">
+                                <div id="col0" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv5" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <!--<div id="containerChart1" class="chartDivStyle" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">hasdfasdasdasdasd</div>-->
+                                <div id="col1" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv6" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col2" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv7" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col3" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv8" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row rowStyle" id="Row3">
+                                <div id="col0" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv9" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <!--<div id="containerChart1" class="chartDivStyle" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">hasdfasdasdasdasd</div>-->
+                                <div id="col1" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv10" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col2" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv11" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                                <div id="col3" class="col-xs-2 col-sm-2 col-md-3 col-lg-3 chartDivStyle">
+                                    <div id="pieDiv12" data-highcharts-chart="2">
+                                    </div>
+                                </div>
+                            </div>
+                </section>
+            </form>
+        </aside>
+        

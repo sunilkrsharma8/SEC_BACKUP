@@ -1,0 +1,4 @@
+.sidebar-menu ul li a.current {
+     background:red;
+     color:white;
+}

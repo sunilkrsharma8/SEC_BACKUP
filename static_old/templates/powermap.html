@@ -1,0 +1,1030 @@
+<html>
+<head>
+<title>SEC</title>
+<meta charset="utf-8"></meta>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content=""></meta>
+<meta name="author" content=""></meta>
+<!--<link rel="icon" href="../../favicon.ico">  -->
+<title>Starter Template for Bootstrap</title>
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet"></link>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+<link rel="stylesheet" href="css/leaflet.css"></link>
+<link rel="stylesheet" href="css/classic.css"></link>
+<!--<link rel="stylesheet" href="css/app-custom.css"></link>-->
+
+<link rel="shortcut icon" href="images/gelogo.jpg"></link>
+<meta
+	content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+	name='viewport'></meta>
+<link href="css/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css"></link>
+<link href="css/bootstrap/3.2.0/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css"></link>
+<link href="css/AdminLTE.css" rel="stylesheet" type="text/css"></link>
+<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet"
+	media="screen"></link>
+
+<link
+	href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+	rel="stylesheet"></link>
+
+<!-- DataTables -->
+<link rel="stylesheet" href="css/dataTables.bootstrap.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css" />
+
+
+<style type="text/css">
+::-webkit-scrollbar {
+	width: 8px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-button {
+	background-color: #8FD6F5;
+}
+
+::-webkit-scrollbar-track {
+	background-color: #333;
+}
+
+::-webkit-scrollbar-track-piece {
+	background-color: #333;
+}
+
+::-webkit-scrollbar-thumb {
+	height: 50px;
+	background-color: #8FD6F5;
+	border-radius: 15px;
+}
+
+::-webkit-scrollbar-corner {
+	background-color: #fff;
+}
+
+::-webkit-resizer {
+	background-color: #d3d3d3;
+}
+
+body,
+html{
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+
+#pleaseWaitDialog {
+	position: fixed;
+	top: 30%;
+}
+
+.activeDurationBtn {
+    color: #fff !important;
+    background-color: #337ab7 !important;
+    border-color: #2e6da4 !important;
+} 
+
+.Box-Color {
+	background-color: #428bca !important;
+}
+
+.left-side {
+	position: fixed !important;
+}
+
+body {
+	padding-top: 50px;
+}
+
+body>.header {
+	position: fixed !important;
+}
+
+.chartDivStyle {
+	padding-top: 15px !important;
+	border-radius: 20px !important;
+}
+
+.rowStyle {
+	margin-bottom: 15px !important;
+}
+
+.highcharts-container {
+	position: inherit !important;
+	border-radius: 20px !important;
+	/* width:100% !important;
+				height:100% !important;  */
+}
+
+.highcharts-tooltip {
+	z-index: 9998;
+}
+
+.skin-black .navbar .nav>li>a, .skin-black .navbar .nav>li>a:hover,
+	.skin-black .navbar .nav>li>a:focus, .skin-black .navbar .nav .open>a,
+	.skin-black .navbar .nav .open>a:hover, .skin-black .navbar .nav .open>a:focus
+	{
+	color: #c00;
+	background-color: transparent;
+}
+
+.navbar-nav>.notifications-menu>.dropdown-menu>li.header, .navbar-nav>.messages-menu>.dropdown-menu>li.header,
+	.navbar-nav>.tasks-menu>.dropdown-menu>li.header {
+	background-color: #d3d3d3;
+	color: #000000;
+}
+
+.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a>.glyphicon,
+	.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a>.fa,
+	.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a>.ion {
+	background-color: transparent;
+}
+
+.box {
+	background: transparent;
+}
+
+.box-title {
+	color: #fff;
+}
+
+.flot-text {
+	color: #fff !important;
+}
+
+#map {
+	height: 50%;
+}
+
+.textLimit {
+	display: block;
+	width: 150px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.table-text-size {
+	font-size: 12px;
+}
+
+.sliderContainer {
+	margin: 0 50px;
+}
+
+.dotLegend {
+	border-radius: 50%;
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+}
+
+.dotColor {
+	background: #20a0ff;
+}
+
+.gdotColor {
+	background: #40b060;
+}
+</style>
+</head>
+<body class="skin-black" data-ng-controller="HomeController"
+	style="background-color: #444 ;">
+	<header class="header">
+		<a href="#" class="logo"> <img src="images/gelogo_neutral.png"
+			class="icon" alt="ge" width="100%" height="100%" /> <!--<span style="font-size:14px">GE Power Services</span>      -->
+		</a>
+		<nav class="navbar navbar-static-top" role="navigation"
+			style="background-color: #444 !important; border: none !important;">
+			<a href="#" class="navbar-btn sidebar-toggle" role="button"> <span
+				class="sr-only">Toggle navigation</span> <span class="icon-bar"
+				style="background: #f9f9f9 !important;"></span> <span
+				class="icon-bar" style="background: #f9f9f9 !important;"></span> <span
+				class="icon-bar" style="background: #f9f9f9 !important;"></span>
+			</a>
+			<!--<nav class="navbar navbar-default">-->
+			<div class="navbar-custom-menu">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#" style="color: white">SEC
+						Dashboard <small style="font-size: 12px">Powered By Predix</small>
+					</a>
+				</div>
+				<ul class="nav navbar-nav navbar-right" style="padding-right: 25px">
+					<!-- Messages: style can be found in dropdown.less-->
+					<!-- Notifications: style can be found in dropdown.less -->
+					<li class="dropdown notifications-menu"><a href="#"
+						class="dropdown-toggle" data-toggle="dropdown"> <i
+							class="fa fa-bell-o" style="font-size: 24px; color: red"></i> <span
+							class="label label-warning">5</span>
+					</a>
+						<ul class="dropdown-menu">
+							<li class="header">You have 5 notifications</li>
+							<li>
+								<!-- inner menu: contains the actual data -->
+								<ul class="menu">
+									<li><a href="#" data-toggle="tooltip"
+										title="Priority 4 - Turbine 8 (Local Bearing Problem)"> <i
+											class="fa fa-warning text-red"></i>Priority 4 - Turbine 8
+											(Local Bearing Problem)
+									</a></li>
+									<li><a href="#" data-toggle="tooltip"
+										title="Priority 1 - Turbine 11 (Excessive Rotor Vibration Problem)">
+											<i class="fa fa-warning text-red"></i>Priority 1 - Turbine 11
+											(Excessive Rotor Vibration Problem)
+									</a></li>
+									<li><a href="#" data-toggle="tooltip"
+										title="Priority 3 - Turbine 10 (Thrust Bearing - Axial Shift)">
+											<i class="fa fa-warning text-red"></i>Priority 3 - Turbine 10
+											(Thrust Bearing - Axial Shift)
+									</a></li>
+									<li><a href="#" data-toggle="tooltip"
+										title="Turbine 7 went offline"> <i
+											class="fa fa-warning text-red"></i>Turbine 7 went offline
+									</a></li>
+									<li><a href="#" data-toggle="tooltip"
+										title="Priority 5 - Turbine 9 (Wheelspace Temperature Problem)">
+											<i class="fa fa-warning text-red"></i>Priority 5 - Turbine 9
+											(Wheelspace Temperature Problem)
+									</a></li>
+								</ul>
+							</li>
+							<li class="footer"><a href="#">View all</a></li>
+						</ul></li>
+				</ul>
+			</div>
+			<!--</nav>-->
+		</nav>
+	</header>
+
+	<div class="wrapper row-offcanvas row-offcanvas-left">
+		<input type="hidden" id="IsEnableButton" runat="server" />
+		<aside class="left-side sidebar-offcanvas">
+			<section class="sidebar">
+				<div class="user-panel">
+					<div class="pull-left image"></div>
+					<div class="pull-left info">
+						<i class="glyphicon glyphicon-user"></i> Hello, Suresh S. Nair
+						<!-- <%=(Session["FirstName"] + "!") %> -->
+						<br /> <a href="logout.html"><i
+							class="fa fa-circle text-success"></i> Logout</a>
+					</div>
+				</div>
+				<ul class="sidebar-menu  scroll">
+					<li><a href="#"><i class="fa fa-th"></i><span>Dashboard</span></a>
+						<ul>
+							<li><a href="powermap.html"><i class="fa fa-th"></i><span>PowerMap
+										1</span></a></li>
+							<li><a href="amchart.html"><i class="fa fa-th"></i><span>PowerMap
+										2</span></a></li>
+						</ul></li>
+					<li><a href="powermap.html"><i class="fa fa-th"></i><span>PowerMap</span></a>
+					</li>
+					<li><a href="meridium.html"><i class="fa fa-th"></i><span>Meridium</span></a>
+					</li>
+					<li><a href="#"><i class="fa fa-th"></i><span>eTerra</span></a>
+					</li>
+					<li><a href="oe.html"><i class="fa fa-th"></i><span>OE</span></a>
+					</li>
+				</ul>
+				<!-- <Menu:UCMenu runat="server" ID="MyUserInfoBoxControl" /> -->
+			</section>
+		</aside>
+		<aside class="right-side" style="background: transparent;">
+			<section class="content-header" style="background-color: #333;">
+				<h1 style="color: #fff;">
+					Power Plant map <small><span /></small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#" style="color: #fff !important;"><i
+							class="fa fa-dashboard"></i> Home</a></li>
+					<li><a href="#" class="active" style="color: #fff !important;">
+							Power Plant map</a></li>
+				</ol>
+			</section>
+			<form id="form1" runat="server" method="POST"
+				enctype="multipart/form-data" class="form-horizontal">
+				<input id="emailHdn" type="hidden" value="" />
+				<section class="content invoice" id="target"
+					style="background: transparent; border: none !important;">
+
+					<div class="row">
+						<div class="col-sm-7 col-md-7 col-lg-7" style="padding-right: 10px;">
+							<!-- interactive chart -->
+							<div class="box" style="height: 85%; border-radius: 20px; border: 2px solid #8FD6F5; overflow: hidden;">
+								<!--
+								<div class="box-header with-border" style="font-size: 15px; color: #fff;padding: 2px 10px 2px 10px;font-weight: 700;">
+									<span>Power Sites</span>
+								</div>  
+								-->
+								<div class="box-body" style="padding: 5px;">
+									<div id="map" style="height: 98%; z-index: 0; border-radius: 15px; border: 2px solid #8FD6F5;"></div>
+
+									<br /> <br />
+									<div class="sliderContainer">
+										<div id="dotSlider"></div>
+									</div>
+
+								</div>
+								<!-- /.box-body-->
+							</div>
+							<!-- /.box -->
+						</div>
+						<div class="col-sm-5 col-md-5 col-lg-5" style="padding-left: 0px;">
+	                       <div class="box" style="height: 10%; border-radius: 20px; border: 2px solid #8FD6F5;margin-bottom: 10px;">
+							<div style="color: #fff; margin: 5px;">
+
+
+								
+									<!--
+									<div class="row">
+										<div class="col-md-8" style="margin-bottom: 5px;">
+										<div class="input-group date form_date" data-date=""
+											data-date-format="dd MM yyyy" data-link-field="dtp_input1"
+											data-link-format="yyyy-mm-dd">
+											<input class="form-control inputstl" size="16" type="text"
+												value="" readonly="true" placeholder="Please select date" ></input> <span
+												class="input-group-addon"><span
+												class="glyphicon glyphicon-remove"></span></span> <span
+												class="input-group-addon"><span
+												class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+									</div>
+									<input type="hidden" id="dtp_input1" value="" />
+								</div>  
+									 -->
+								
+								
+								<div class="row">
+							
+								    <select  style=" float: left; margin-left: 0px;" class="col-xs-3 selectpicker" id="sitesDropDown"  data-live-search="true">
+								      <!-- <option data-tokens="" disabled="true" selected="true">Please Select Site</option>  --> 
+								    </select>
+								
+								     <div class = "btn-group col-sm-9" id="kpiDuration" style="margin-bottom: 5px; float: right; margin-right: 0px;" >
+								      <button style="width:20%;" type = "button" class = "btn btn-default activeDurationBtn">7</button>
+								      <button style="width:20%;" type = "button" class = "btn btn-default">15</button>
+								      <button style="width:20%;" type = "button" class = "btn btn-default">30</button>
+								      <button style="width:20%;" type = "button" class = "btn btn-default">60</button>
+								      <button style="width:20%;" type = "button" class = "btn btn-default">90</button>
+                                    </div>
+                                    
+								</div>
+								
+							
+					    
+			    	   <!-- <div class="col-sm-6" style="margin-top: 10px;">
+					     <select class="selectpicker" id="plantsDropDown" data-live-search="true" multiple="">
+					      <option data-tokens="" disabled="true" selected="true">Please Select Plant</option> 
+					    </select>    
+							</div> -->
+							
+							</div>
+							</div>
+							<!-- BAR CHART -->
+							<div class="box" style="height: 73%; border-radius: 20px; border: 2px solid #8FD6F5;">
+							   <div class="box-body" style="padding: 5px;">
+                                    <div id="container" style="min-width: 50%; height: 98%; border-radius: 15px; margin: 0 auto"></div>
+
+                                </div>
+							</div>
+							<!-- /.box -->
+						</div>
+					</div>
+
+				</section>
+			</form>
+		</aside>
+	</div>
+	<div></div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/leaflet.js"></script>
+
+	<script type="text/javascript" src="js/app-custom.js"></script>
+
+
+	<!-- jQuery 2.2.3 -->
+	<script data-require="jquery@2.2.4" data-semver="2.2.4"
+		src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<!-- jQuery UI 1.11.4 -->
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+	<!-- FLOT CHARTS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+	<!-- DataTables -->
+	<script src="js/jquery.dataTables.min.js"></script>
+	<script src="js/dataTables.bootstrap.min.js"></script>
+	<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.resize.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"
+		type="text/javascript"></script>
+	<script src="https://code.highcharts.com/highcharts-more.js"
+		type="text/javascript"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/solid-gauge.js"
+		type="text/javascript"></script>
+	<script src="https://code.highcharts.com/modules/drilldown.js"
+		type="text/javascript"></script>
+	<!-- ChartJS 1.0.1 -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/app-custom.js"></script>
+	<script type="text/javascript" src="js/bootstrap-datetimepicker.js"
+		charset="UTF-8"></script>
+	<script type="text/javascript">
+              
+ function getRecordsInfo(obj) {
+     //obj.url = url.replace(/^http:\/\//i, 'https://');
+     return $.ajax(obj);
+ }
+
+ function mapMarkerNotificatios(plant, notifications) {
+
+     var plantInfo = "Alert Notifications of " + plant.name.toUpperCase(); 
+
+     $("#markerNotificationPlantInfo").html(plantInfo);
+     var table = $("<table />");
+     table.addClass("table table-responsive table-striped");
+     var columnCountArr = [1, 2, 3, 4, 5];
+     var notificationsArr = notifications._embedded.notifications;
+
+     var row = $(table[0].insertRow(-1));
+
+     columnCountArr.forEach(function(value, i) {
+         var headerCell = $("<th />");
+         headerCell.html(Object.keys(notificationsArr[0])[i].toUpperCase());
+         row.append(headerCell);
+     });
+
+
+     notificationsArr.forEach(function(value, i) {
+         row = $(table[0].insertRow(-1));
+         columnCountArr.forEach(function(value, j) {
+             var cell = $("<td />");
+             cell.html(Object.values(notificationsArr[i])[j]);
+             row.append(cell);
+         });
+     });
+
+     var dvTable = $("#markerNotificationInfoModelBody");
+     dvTable.html("");
+     dvTable.append(table);
+     $('#markerNotificationInfo').modal('show');
+ }
+
+ function setMap() {
+     let map = L.map('map', {
+         zoomControl: false
+     }).setView([26.399250, 49.984360], 15);
+     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+     }).addTo(map);
+
+     L.icon = function(options) {
+         return new L.Icon(options);
+     };
+
+     map.options.maxZoom = 5;
+     map.options.minZoom = 5;
+     return map;
+ }
+
+ function setMapIconOption() {
+     return L.Icon.extend({
+         options: {
+             // shadowUrl: 'images/map_marker-shadow.png',
+             iconSize: [45, 55],
+            // shadowSize:   [40, 50],
+             iconAnchor: [22, 94],
+             shadowAnchor: [4, 62],
+             popupAnchor: [-3, -76]
+         }
+     });
+ }
+
+ function setSitePopup(site) {
+     var id = 'popup' + site._links.self.href.replace(/^.*\/\/[^\/]+/, '').replace(/\//g, '_');
+     var table = document.createElement('table');
+     table.setAttribute("id", id);
+     table.setAttribute("class", "table table-text-size");
+     var thead = document.createElement('thead');
+     var tr = document.createElement('tr');
+     thead.appendChild(tr);
+     var th1 = document.createElement('th');
+
+     var th1text = document.createTextNode('Plant');
+     th1.appendChild(th1text);
+
+     tr.appendChild(th1);
+
+     var th2 = document.createElement('th');
+
+     var th2text = document.createTextNode('Notifications');
+     th2.appendChild(th2text);
+
+     tr.appendChild(th2);
+
+     table.appendChild(thead);
+     tbody = document.createElement('tbody');
+     table.appendChild(tbody);
+     return table;
+
+ }
+
+
+ function setPlantNotifications(tbl, plant, notifications) {
+     var tableRef = tbl.getElementsByTagName('tbody')[0];
+     var newRow = tableRef.insertRow(tableRef.rows.length);
+     var newCell1 = newRow.insertCell(0);
+     var newText1 = document.createElement("span");
+     newText1.setAttribute("class", "textLimit");
+     newText1.innerHTML = plant.name;
+     newCell1.appendChild(newText1);
+
+     var newCell2 = newRow.insertCell(1);
+     var newText2 = document.createElement("span");
+
+     newText2.plant = plant;
+     newText2.notifications = notifications;
+
+     if (notifications._embedded.notifications.length) {
+         newText2.onclick = function() {
+             mapMarkerNotificatios(plant, notifications);
+         };
+
+         newText2.setAttribute("data-toggle", "modal");
+         newText2.setAttribute("style", "text-decoration: underline; color: blue; cursor:pointer;");
+     }
+
+     newText2.innerHTML = notifications._embedded.notifications.length;
+     newCell2.appendChild(newText2);
+ }
+
+
+ function setMarkers(sites) {
+	 let mkrs = [];
+     sites.forEach((site) => {
+         var tbl = this.setSitePopup(site);
+         this.getRecordsInfo({
+             url: site._links.plants.href,
+             async: false
+         }).then((plants) => {
+             plants._embedded.plants.forEach((plant) => {
+                 this.getRecordsInfo({
+                     url: plant._links.notifications.href,
+                     async: false
+                 }).then((notifications) => {
+                     this.setPlantNotifications(tbl, plant, notifications);
+                 });
+             });
+         });
+
+         var markerIcon = new LeafIcon({
+             iconUrl: this.setmarkersIcons(site)
+         });
+         
+         var mkr = L.marker([site.longitude, site.latitude], {
+                    icon: markerIcon,
+                  title: site.name
+             }).addTo(map);
+         
+         mkr.addEventListener("click", function() {
+        	 generateHighchartForSite(site);
+         });
+         
+         markers.push(mkr.bindPopup(tbl));
+         mkrs.push(mkr);
+     });
+     map.panTo(new L.LatLng(26.399250, 49.984360));
+     mkrsLayers = mkrs;
+
+ }
+
+ function setLeafLetMapMarker() {
+     this.getRecordsInfo({
+         url: window.location.origin.concat('/sites'),
+         async: false
+     }).then((sites) => {
+         this.setMarkers(sites._embedded.sites);
+     });
+ }
+
+ function setmarkersIcons(site) {
+     var nots = [];
+     this.getRecordsInfo({
+         url: site._links.plants.href,
+         async: false
+     }).then((plants) => {
+         plants._embedded.plants.forEach((plant) => {
+             this.getRecordsInfo({
+                 url: plant._links.notifications.href,
+                 async: false
+             }).then((notifications) => {
+                 nots = nots.concat(notifications._embedded.notifications);
+             });
+         });
+     });
+
+
+     var prioritiesArr = nots.map(function(item) {
+         return item.priority
+     });
+
+     if (prioritiesArr.includes("PRIORITY 1")) {
+         return "images/map_marker-red.png";
+     } else if (prioritiesArr.includes("PRIORITY 2")) {
+         return "images/map_marker-blue.png";
+     } else {
+         return "images/map_marker-green.png";
+     }
+
+ }
+
+ var markers = [];
+ var map = this.setMap();
+ var LeafIcon = this.setMapIconOption();
+ this.setLeafLetMapMarker();
+ var mkrsLayers;
+ ///////////////////////////
+ 
+var dotlayer;
+var dots;
+var dotcount = 200;
+
+var gdotlayer;
+var gdots;
+var gdotcount = 75;
+ 
+  //add layer controls/legend
+  
+   var overlayMaps = {};
+   var strLyr = "{";
+   mkrsLayers.forEach((mkrlyr)=>{
+	   
+	   var baseUrlPattern = /^https?:\/\/[a-z\:0-9.]+/;
+	   var result = "";
+
+	   var match = baseUrlPattern.exec(mkrlyr._icon.src);
+	   if (match != null) {
+	       result = match[0];
+	   }
+
+	   if (result.length > 0) {
+	       var url = mkrlyr._icon.src.replace(result, "");
+	   }
+	 
+	  if(url==='/images/map_marker-red.png'){
+		  overlayMaps['<div class="dotLegend"><img src="images/map_marker-red.png" height="15" width="15"></img></div>&nbsp; site']  = mkrlyr;
+	  }
+	  if(url==='/images/map_marker-blue.png'){
+		  overlayMaps['<div class="dotLegend"><img src="images/map_marker-blue.png" height="15" width="15"></img></div>&nbsp; site']  = mkrlyr;
+
+		
+	  }
+	  
+      if(url==='/images/map_marker-green.png'){
+    	  overlayMaps['<div class="dotLegend"><img src="images/map_marker-green.png" height="15" width="15"></img></div>&nbsp; site']  = mkrlyr; 
+	  }
+	  
+  });
+   
+ //var layerbox = L.control.layers(null, overlayMaps, {collapsed: false}).addTo(map); 
+  
+ function generateNotificationChart(){
+	// Create the chart
+		/* return Highcharts.chart('container', {
+		    chart: {
+		        type: 'column'
+		    },
+		    title: {
+		        text: 'Site Notification chart'
+		    },
+		    subtitle: {
+		       /// text: ''
+		    },
+		    xAxis: {
+		        type: 'category'
+		    },
+
+		    plotOptions: {
+		        series: {
+		            borderWidth: 0,
+		            dataLabels: {
+		                enabled: true
+		            }
+		        }
+		    },
+
+		    series: [{
+		    	showInLegend: false,
+		    	name: 'Site1',
+		        data: [{
+		            name: 'plant1',
+		            y: 3,
+		            drilldown: 'plant1'
+		        }, {
+		            name: 'plant2',
+		            y: 3,
+		            drilldown: 'plant2'
+		        }, {
+		            name: 'plant3',
+		            y: 3,
+		            drilldown: 'plant3'
+		        }]
+		    }],
+		    drilldown: {
+		        series: [{
+		        	showInLegend: false,
+		        	id: 'plant1',
+		            data: [
+		               // ['Closed',5],
+		                ['Progess', 2],
+		                ['Closed', 1],
+		                ['Open', 4]
+		            ]
+		        }, {
+		        	showInLegend: false,
+		        	id: 'plant2',
+		            data: [
+		                //['Open', 6],
+		                ['Progess', 2],
+		                ['Closed', 2],
+		                ['Open', 4]
+		            ]
+		        }, {
+		        	showInLegend: false,	
+		        	id: 'plant3',
+		            data: [
+		               // ['Progess', 2],
+		                ['Open', 7],
+		                ['Progess', 3],
+		                ['Closed', 2]
+		            ]
+		        }]
+		    }
+		}); */
+		
+		
+		
+		
+		return 	Highcharts.chart('container', {
+		    chart: {
+		        type: 'spline'
+		    },
+		    title: {
+		        text: 'KPI Statistics'
+		    },
+		    subtitle: {
+		        text: 'Time data in unit'
+		    },
+		    xAxis: {
+		        type: 'datetime',
+		        dateTimeLabelFormats: {
+		            month: '%e. %b',
+		            year: '%b'
+		        },
+		        title: {
+		            text: 'Date'
+		        }
+		    },
+		    yAxis: {
+		        title: {
+		            text: 'Unit'
+		        },
+		        min: 0
+		    },
+		   
+
+		    plotOptions: {
+		        spline: {
+		            marker: {
+		                enabled: true
+		            }
+		        }
+		    },
+
+		    series: [{
+		        name: 'KPI1',
+		        data: [
+		            [Date.UTC(1970, 9, 21), 0],
+		            [Date.UTC(1970, 10, 4), 0.28],
+		            [Date.UTC(1970, 10, 9), 0.25],
+		            [Date.UTC(1970, 10, 27), 0.2],
+		            [Date.UTC(1970, 11, 2), 0.28],
+		            [Date.UTC(1970, 11, 26), 0.28],
+		            [Date.UTC(1970, 11, 29), 0.47],
+		            [Date.UTC(1971, 0, 11), 0.79],
+		            [Date.UTC(1971, 0, 26), 0.72],
+		            [Date.UTC(1971, 1, 3), 1.02],
+		            [Date.UTC(1971, 1, 11), 1.12],
+		            [Date.UTC(1971, 1, 25), 1.2],
+		            [Date.UTC(1971, 2, 11), 1.18],
+		            [Date.UTC(1971, 3, 11), 1.19],
+		            [Date.UTC(1971, 4, 1), 1.85],
+		            [Date.UTC(1971, 4, 5), 2.22],
+		            [Date.UTC(1971, 4, 19), 1.15],
+		            [Date.UTC(1971, 5, 3), 0]
+		        ]
+		    }, {
+		        name: 'KPI2',
+		        data: [
+		            [Date.UTC(1970, 9, 29), 0],
+		            [Date.UTC(1970, 10, 9), 0.4],
+		            [Date.UTC(1970, 11, 1), 0.25],
+		            [Date.UTC(1971, 0, 1), 1.66],
+		            [Date.UTC(1971, 0, 10), 1.8],
+		            [Date.UTC(1971, 1, 19), 1.76],
+		            [Date.UTC(1971, 2, 25), 2.62],
+		            [Date.UTC(1971, 3, 19), 2.41],
+		            [Date.UTC(1971, 3, 30), 2.05],
+		            [Date.UTC(1971, 4, 14), 1.7],
+		            [Date.UTC(1971, 4, 24), 1.1],
+		            [Date.UTC(1971, 5, 10), 0]
+		        ]
+		    }, {
+		        name: 'KPI3',
+		        data: [
+		            [Date.UTC(1970, 10, 25), 0],
+		            [Date.UTC(1970, 11, 6), 0.25],
+		            [Date.UTC(1970, 11, 20), 1.41],
+		            [Date.UTC(1970, 11, 25), 1.64],
+		            [Date.UTC(1971, 0, 4), 1.6],
+		            [Date.UTC(1971, 0, 17), 2.55],
+		            [Date.UTC(1971, 0, 24), 2.62],
+		            [Date.UTC(1971, 1, 4), 2.5],
+		            [Date.UTC(1971, 1, 14), 2.42],
+		            [Date.UTC(1971, 2, 6), 2.74],
+		            [Date.UTC(1971, 2, 14), 2.62],
+		            [Date.UTC(1971, 2, 24), 2.6],
+		            [Date.UTC(1971, 3, 2), 2.81],
+		            [Date.UTC(1971, 3, 12), 2.63],
+		            [Date.UTC(1971, 3, 28), 2.77],
+		            [Date.UTC(1971, 4, 5), 2.68],
+		            [Date.UTC(1971, 4, 10), 2.56],
+		            [Date.UTC(1971, 4, 15), 2.39],
+		            [Date.UTC(1971, 4, 20), 2.3],
+		            [Date.UTC(1971, 5, 5), 2],
+		            [Date.UTC(1971, 5, 10), 1.85],
+		            [Date.UTC(1971, 5, 15), 1.49],
+		            [Date.UTC(1971, 5, 23), 1.08]
+		        ]
+		    }]
+		});
+		
+
+
+ 
+ }
+
+ var chartObj = this.generateNotificationChart();
+ 
+ function updateSiteDropDown(){
+	 this.getRecordsInfo({
+         url: window.location.origin.concat('/sites'),
+         async: false
+     }).then((sites) => {
+    	 sites._embedded.sites.forEach((site)=>{
+    		 $("#sitesDropDown").append('<option data-tokens="'+escape(JSON.stringify(site))+'" value="'+escape(JSON.stringify(site))+'">'+ site.name +'</option>');
+    	 });
+     });
+ }
+ 
+ 
+ this.updateSiteDropDown();
+ function formNotifChartDataObj(site){
+	 var notifChartObj = {site: site, plants:[]}
+	 var self = this;
+	 self.notifChartObj = notifChartObj;
+	 this.getRecordsInfo({
+          url: site._links.plants.href,
+          async: false
+      }).then((plants)=>{
+    	  self.notifChartObj.plants = plants._embedded.plants;
+    	  plants._embedded.plants.forEach((plant,idx)=>{  
+    		 self.notifChartObj.plants[idx].notifications = [];
+    		 self.notifIdx = idx;
+    		 self.plant = plant;
+    		 this.getRecordsInfo({
+    	          url: plant._links.notifications.href,
+    	          async: false
+    	      }).then((notifications)=>{ 
+    	    	  self.notifChartObj.plants[self.notifIdx] = {plant:self.plant , notifications:notifications} ;
+    	      });
+    	  });
+      });
+	 
+   // this.updateNotificationChart(notifChartObj);
+ }
+
+ function updateNotificationChart(notifChartObj){
+
+	  chartObj.title.update({
+		  text: notifChartObj.site.name.concat(" Notification chart")
+      });
+	 
+	 chartObj.series[0].update({
+         name: notifChartObj.site.name
+     });
+	 
+ 	 var data = [];
+ 	 var drilSeries = [];
+	 notifChartObj.plants.forEach((plant,idx)=>{  
+		
+		 data.push({name:plant.plant.name,y:plant.notifications._embedded.notifications.length,drilldown:plant.plant.name});
+		
+		 var drillData =  {showInLegend: false,id: plant.plant.name, data: []};
+		 
+		 drillData.data =  plant.notifications._embedded.notifications.map(function(item){
+			  
+			 var drd = [];
+			 if(item.priority=='PRIORITY 1'){
+				 drd.push(item.status);  
+				 drd.push(3);
+				 return drd; 
+			   } else if(item.priority=='PRIORITY 2'){
+				   drd.push(item.status);  
+				   drd.push(2);
+				   return drd; 
+			   } else {
+				   drd.push(item.status);  
+					drd.push(1);
+				    return drd; 
+			   }
+          });
+		 drilSeries.push(drillData);
+	 });
+	   
+	 
+	 chartObj.series[0].setData(data);
+	 chartObj.options.drilldown.series = drilSeries;
+	
+ }
+ $( '#sitesDropDown' ).on('change', function(){ 
+	if($(this).val()){
+		var selectedSite = JSON.parse(unescape($(this).val()));
+		//window.formNotifChartDataObj(selectedSite); 
+	}
+ });
+ 
+ function generateHighchartForSite(site){
+	 
+	 //this.formNotifChartDataObj(site); 
+
+ }
+
+  </script>
+  
+  <script type="text/javascript">
+	$('.form_date').datetimepicker({
+        language:  'en',
+        format: 'mm/dd/yyyy',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0,
+	    endDate: '+0d',
+	    autoclose: true
+	        
+    });
+	
+	$('button.btn').click(function(){
+	    $('button.btn').removeClass("activeDurationBtn");
+	    $(this).addClass("activeDurationBtn");
+	});
+	
+</script>
+
+ </body>
+</html>
+
+<!-- Notification popup -->
+<div id="markerNotificationInfo" class="modal fade" role="dialog">
+	<div class="modal-dialog" style="width: 900px;">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<div class="modal-title" id="markerNotificationPlantInfo"></div>
+			</div>
+			<div class="modal-body" id="markerNotificationInfoModelBody"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

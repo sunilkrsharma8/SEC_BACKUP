@@ -1,0 +1,25 @@
+<aside class="right-side" style="background: transparent;" ng-controller="powermapController">
+   <section class="content-header" style="background-color: #333;">
+      <h1 style="color: #fff;">
+         {{title}} <small><span /></small>
+      </h1>
+      <ol class="breadcrumb">
+         <li><a href="#" style="color: #fff !important;"><i
+            class="fa fa-dashboard"></i> Home</a></li>
+         <li><a href="#" class="active" style="color: #fff !important;">
+            {{title}}</a>
+         </li>
+      </ol>
+   </section>
+   <form id="form1" runat="server" method="POST"
+      enctype="multipart/form-data" class="form-horizontal">
+      <input id="emailHdn" type="hidden" value="" />
+      <section class="content invoice" id="target"
+         style="background: transparent; border: none !important;">
+         <div class="row">
+            <lflet-map-directive></lflet-map-directive>
+            <power-map-high-chart-directive></power-map-high-chart-directive>
+         </div>
+      </section>
+   </form>
+</aside>
